@@ -11,6 +11,7 @@ namespace MenuProUI.Dialogs;
 public partial class AccessDialog : Window
 {
     private readonly List<Client> _availableClients;
+    private bool _closing;
     public AccessEntry Result { get; private set; }
 
     public AccessDialog() : this(new AccessEntry(), null)
@@ -75,6 +76,13 @@ public partial class AccessDialog : Window
         FavoriteBox.IsChecked = Result.IsFavorite;
 
         ApplyPanels();
+        Deactivated += (_, _) => OnOutsideClick();
+    }
+
+    private void OnOutsideClick()
+    {
+        if (!_closing)
+            Close(false);
     }
 
     private void OnTypeChanged(object? sender, SelectionChangedEventArgs e) => ApplyPanels();
@@ -174,6 +182,7 @@ public partial class AccessDialog : Window
         }
 
         Result.AtualizadoEm = DateTime.UtcNow;
+        _closing = true;
         Close(true);
     }
 
@@ -216,7 +225,11 @@ public partial class AccessDialog : Window
         };
     }
 
-    private void OnCancel(object? sender, Avalonia.Interactivity.RoutedEventArgs e) => Close(false);
+    private void OnCancel(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        _closing = true;
+        Close(false);
+    }
 
     private async void OnTestUrl(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {

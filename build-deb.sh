@@ -37,6 +37,11 @@ build_package()
   mkdir -p "${STAGE}/usr/share/applications"
   mkdir -p "${STAGE}/usr/share/icons/hicolor/256x256/apps"
   mkdir -p "${STAGE}/usr/share/pixmaps"
+  chmod 0755 "${STAGE}" "${STAGE}/DEBIAN" "${STAGE}${INSTALL_DIR}" \
+    "${STAGE}/opt" "${STAGE}/usr" "${STAGE}/usr/bin" "${STAGE}/usr/share" \
+    "${STAGE}/usr/share/applications" "${STAGE}/usr/share/icons" \
+    "${STAGE}/usr/share/icons/hicolor" "${STAGE}/usr/share/icons/hicolor/256x256" \
+    "${STAGE}/usr/share/icons/hicolor/256x256/apps" "${STAGE}/usr/share/pixmaps"
 
   echo "[3/6] Copiando arquivos do app ..."
   cp -a "${OUTDIR}/." "${STAGE}${INSTALL_DIR}/"
@@ -128,6 +133,7 @@ POSTRM
   chmod 0755 "${STAGE}/DEBIAN/postrm"
 
   echo "[5/6] Build do .deb ..."
+  find "${STAGE}" -type d -exec chmod 0755 {} +
   dpkg-deb --build "${STAGE}"
 
   echo

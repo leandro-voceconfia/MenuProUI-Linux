@@ -6,6 +6,7 @@ namespace MenuProUI.Dialogs;
 public partial class ClientDialog : Window
 {
     public Client Result { get; private set; }
+    private bool _closing;
 
     public ClientDialog() : this(new Client())
     {
@@ -25,6 +26,13 @@ public partial class ClientDialog : Window
 
         NameBox.Text = Result.Nome;
         NotesBox.Text = Result.Observacoes ?? "";
+        Deactivated += (_, _) => OnOutsideClick();
+    }
+
+    private void OnOutsideClick()
+    {
+        if (!_closing)
+            Close(false);
     }
 
     private void OnSave(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -36,8 +44,13 @@ public partial class ClientDialog : Window
         Result.Observacoes = NotesBox.Text;
         Result.AtualizadoEm = System.DateTime.UtcNow;
 
+        _closing = true;
         Close(true);
     }
 
-    private void OnCancel(object? sender, Avalonia.Interactivity.RoutedEventArgs e) => Close(false);
+    private void OnCancel(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        _closing = true;
+        Close(false);
+    }
 }

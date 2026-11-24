@@ -6,23 +6,32 @@
         Title="Cliente"
         CanResize="False">
 
-  <Grid RowDefinitions="Auto,Auto,Auto,*,Auto" Margin="16" RowSpacing="10">
+  <Border BorderBrush="#333" BorderThickness="1" CornerRadius="8" Margin="8" Padding="16">
+  <Grid RowDefinitions="Auto,Auto,Auto,Auto,*,Auto" RowSpacing="10">
 
-    <TextBlock Text="Nome do Cliente" />
-    <TextBox Grid.Row="1" Name="NameBox"/>
+    <StackPanel Orientation="Horizontal" Spacing="10" Margin="0,0,0,4">
+      <Border Width="34" Height="34" CornerRadius="17" BorderBrush="#333" BorderThickness="1">
+        <TextBlock Text="&#xE716;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+      </Border>
+      <TextBlock Text="Dados do Cliente" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center"/>
+    </StackPanel>
 
-    <TextBlock Grid.Row="2" Text="Observações" />
+    <TextBlock Grid.Row="1" Text="Nome do Cliente" />
+    <TextBox Grid.Row="2" Name="NameBox"/>
 
-    <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto" Height="160">
+    <TextBlock Grid.Row="3" Text="Observações" />
+
+    <ScrollViewer Grid.Row="4" VerticalScrollBarVisibility="Auto" Height="160">
       <TextBox Name="NotesBox"
                AcceptsReturn="True"
                TextWrapping="Wrap"/>
     </ScrollViewer>
 
-    <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10" Margin="0,8,0,0">
+    <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10" Margin="0,8,0,0">
       <Button Content="Cancelar" Click="OnCancel"/>
       <Button Content="Salvar" Click="OnSave"/>
     </StackPanel>
 
   </Grid>
+  </Border>
 </Window>

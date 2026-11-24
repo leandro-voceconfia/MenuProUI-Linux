@@ -5,8 +5,15 @@
         WindowStartupLocation="CenterOwner"
         Title="Acesso"
         CanResize="False">
-  <ScrollViewer Margin="16" VerticalScrollBarVisibility="Auto">
+  <Border BorderBrush="#333" BorderThickness="1" CornerRadius="8" Margin="8" Padding="12">
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
     <StackPanel Spacing="10">
+      <StackPanel Orientation="Horizontal" Spacing="10" Margin="4,0,4,8">
+        <Border Width="34" Height="34" CornerRadius="17" BorderBrush="#333" BorderThickness="1">
+          <TextBlock Text="&#xE7F4;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Border>
+        <TextBlock Text="Dados do Acesso" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center"/>
+      </StackPanel>
       <TextBlock Text="Cliente" />
       <ComboBox Name="ClientBox"/>
 
@@ -76,4 +83,5 @@
 
     </StackPanel>
   </ScrollViewer>
+  </Border>
 </Window>
