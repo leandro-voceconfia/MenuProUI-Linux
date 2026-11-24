@@ -9,7 +9,7 @@
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d">
 
-  <Grid ColumnDefinitions="320,*" RowDefinitions="Auto,*,Auto" Margin="14" RowSpacing="12" ColumnSpacing="12" PointerPressed="OnWindowPointerPressed">
+  <Grid ColumnDefinitions="320,*" RowDefinitions="Auto,*,Auto" Margin="14" RowSpacing="12" ColumnSpacing="12">
 
     <!-- Top bar with dropdown menus -->
     <Border Grid.ColumnSpan="2" CornerRadius="10" Padding="12" BorderBrush="#333" BorderThickness="1">
@@ -21,11 +21,10 @@
                   Width="35"
                   Height="35"
                   Padding="0"
-                  FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
-                  FontSize="24"
+                  FontSize="20"
                   HorizontalContentAlignment="Center"
                   VerticalContentAlignment="Center"
-                  ToolTip.Tip="Menu de Clientes">&#xE716;</Button>
+                  ToolTip.Tip="Menu de Clientes">♟</Button>
           <TextBlock VerticalAlignment="Center" Text="Clientes" FontWeight="Bold"/>
         </StackPanel>
 
@@ -35,11 +34,10 @@
                   Width="35"
                   Height="35"
                   Padding="0"
-                  FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
-                  FontSize="24"
+                  FontSize="20"
                   HorizontalContentAlignment="Center"
                   VerticalContentAlignment="Center"
-                  ToolTip.Tip="Menu de Acessos">&#xE7F4;</Button>
+                  ToolTip.Tip="Menu de Acessos">⌖</Button>
           <TextBlock VerticalAlignment="Center" Text="Acessos" FontWeight="Bold"/>
         </StackPanel>
 
@@ -67,57 +65,57 @@
     </Border>
 
     <!-- Context menus as popup -->
-    <Popup Name="ClientsMenu" IsOpen="False" PlacementTarget="{Binding #ClientsMenuBtn}">
-      <Border BorderBrush="#333" BorderThickness="1" CornerRadius="8" Padding="4" MinWidth="190">
+    <Popup Name="ClientsMenu" IsOpen="False" IsLightDismissEnabled="True" PlacementTarget="{Binding #ClientsMenuBtn}">
+      <Border Background="#1e1e1e" BorderBrush="#333" BorderThickness="1" CornerRadius="8" Padding="4" MinWidth="190">
         <StackPanel Spacing="0">
-          <Button Click="OnNewClient" Padding="12,9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Background="Transparent">
-            <StackPanel Orientation="Horizontal" Spacing="10"><TextBlock Text="&#xE710;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"/><TextBlock Text="Novo Cliente"/></StackPanel>
+          <Button Click="OnNewClient" Padding="12,9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Background="Transparent" Foreground="White">
+            <StackPanel Orientation="Horizontal" Spacing="10"><TextBlock Width="20" Text="✚" Foreground="White"/><TextBlock Text="Novo Cliente" Foreground="White"/></StackPanel>
           </Button>
           <Border BorderBrush="#333" BorderThickness="0,1,0,0" Margin="8,2"/>
-          <Button Click="OnEditClient" Padding="12,9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Background="Transparent">
-            <StackPanel Orientation="Horizontal" Spacing="10"><TextBlock Text="&#xE70F;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"/><TextBlock Text="Editar Cliente"/></StackPanel>
+          <Button Click="OnEditClient" Padding="12,9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Background="Transparent" Foreground="White">
+            <StackPanel Orientation="Horizontal" Spacing="10"><TextBlock Width="20" Text="✎" Foreground="White"/><TextBlock Text="Editar Cliente" Foreground="White"/></StackPanel>
           </Button>
           <Border BorderBrush="#333" BorderThickness="0,1,0,0" Margin="8,2"/>
-          <Button Click="OnDeleteClient" Padding="12,9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Background="Transparent">
-            <StackPanel Orientation="Horizontal" Spacing="10"><TextBlock Text="&#xE74D;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"/><TextBlock Text="Excluir Cliente"/></StackPanel>
+          <Button Click="OnDeleteClient" Padding="12,9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Background="Transparent" Foreground="White">
+            <StackPanel Orientation="Horizontal" Spacing="10"><TextBlock Width="20" Text="✕" Foreground="White"/><TextBlock Text="Excluir Cliente" Foreground="White"/></StackPanel>
           </Button>
           <Border BorderBrush="#333" BorderThickness="0,1,0,0" Margin="8,2"/>
-          <Button Click="OnExportDataClick" Padding="12,9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Background="Transparent">
-            <StackPanel Orientation="Horizontal" Spacing="10"><TextBlock Text="&#xEDE1;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"/><TextBlock Text="Exportar CSVs"/></StackPanel>
+          <Button Click="OnExportDataClick" Padding="12,9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Background="Transparent" Foreground="White">
+            <StackPanel Orientation="Horizontal" Spacing="10"><TextBlock Width="20" Text="⇧" Foreground="White"/><TextBlock Text="Exportar CSVs" Foreground="White"/></StackPanel>
           </Button>
           <Border BorderBrush="#333" BorderThickness="0,1,0,0" Margin="8,2"/>
-          <Button Click="OnImportDataClick" Padding="12,9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Background="Transparent">
-            <StackPanel Orientation="Horizontal" Spacing="10"><TextBlock Text="&#xE896;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"/><TextBlock Text="Importar CSVs"/></StackPanel>
+          <Button Click="OnImportDataClick" Padding="12,9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Background="Transparent" Foreground="White">
+            <StackPanel Orientation="Horizontal" Spacing="10"><TextBlock Width="20" Text="⇩" Foreground="White"/><TextBlock Text="Importar CSVs" Foreground="White"/></StackPanel>
           </Button>
         </StackPanel>
       </Border>
     </Popup>
 
-    <Popup Name="AccessesMenu" IsOpen="False" PlacementTarget="{Binding #AccessesMenuBtn}">
-      <Border BorderBrush="#333" BorderThickness="1" CornerRadius="8" Padding="4" MinWidth="210">
+    <Popup Name="AccessesMenu" IsOpen="False" IsLightDismissEnabled="True" PlacementTarget="{Binding #AccessesMenuBtn}">
+      <Border Background="#1e1e1e" BorderBrush="#333" BorderThickness="1" CornerRadius="8" Padding="4" MinWidth="210">
         <StackPanel Spacing="0">
-          <Button Click="OnNewAccess" Padding="12,9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Background="Transparent">
-            <StackPanel Orientation="Horizontal" Spacing="10"><TextBlock Text="&#xE710;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"/><TextBlock Text="Novo Acesso"/></StackPanel>
+          <Button Click="OnNewAccess" Padding="12,9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Background="Transparent" Foreground="White">
+            <StackPanel Orientation="Horizontal" Spacing="10"><TextBlock Width="20" Text="✚" Foreground="White"/><TextBlock Text="Novo Acesso" Foreground="White"/></StackPanel>
           </Button>
           <Border BorderBrush="#333" BorderThickness="0,1,0,0" Margin="8,2"/>
-          <Button Click="OnCloneAccess" Padding="12,9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Background="Transparent">
-            <StackPanel Orientation="Horizontal" Spacing="10"><TextBlock Text="&#xF16F;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"/><TextBlock Text="Clonar Acesso"/></StackPanel>
+          <Button Click="OnCloneAccess" Padding="12,9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Background="Transparent" Foreground="White">
+            <StackPanel Orientation="Horizontal" Spacing="10"><TextBlock Width="20" Text="⧉" Foreground="White"/><TextBlock Text="Clonar Acesso" Foreground="White"/></StackPanel>
           </Button>
           <Border BorderBrush="#333" BorderThickness="0,1,0,0" Margin="8,2"/>
-          <Button Click="OnEditAccess" Padding="12,9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Background="Transparent">
-            <StackPanel Orientation="Horizontal" Spacing="10"><TextBlock Text="&#xE70F;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"/><TextBlock Text="Editar Acesso"/></StackPanel>
+          <Button Click="OnEditAccess" Padding="12,9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Background="Transparent" Foreground="White">
+            <StackPanel Orientation="Horizontal" Spacing="10"><TextBlock Width="20" Text="✎" Foreground="White"/><TextBlock Text="Editar Acesso" Foreground="White"/></StackPanel>
           </Button>
           <Border BorderBrush="#333" BorderThickness="0,1,0,0" Margin="8,2"/>
-          <Button Click="OnDeleteAccess" Padding="12,9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Background="Transparent">
-            <StackPanel Orientation="Horizontal" Spacing="10"><TextBlock Text="&#xE74D;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"/><TextBlock Text="Excluir Acesso"/></StackPanel>
+          <Button Click="OnDeleteAccess" Padding="12,9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Background="Transparent" Foreground="White">
+            <StackPanel Orientation="Horizontal" Spacing="10"><TextBlock Width="20" Text="✕" Foreground="White"/><TextBlock Text="Excluir Acesso" Foreground="White"/></StackPanel>
           </Button>
           <Border BorderBrush="#333" BorderThickness="0,1,0,0" Margin="8,2"/>
-          <Button Click="OnToggleFavoriteClick" Padding="12,9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Background="Transparent">
-            <StackPanel Orientation="Horizontal" Spacing="10"><TextBlock Text="&#xE735;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"/><TextBlock Text="Favoritar/Desfavoritar"/></StackPanel>
+          <Button Click="OnToggleFavoriteClick" Padding="12,9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Background="Transparent" Foreground="White">
+            <StackPanel Orientation="Horizontal" Spacing="10"><TextBlock Width="20" Text="★" Foreground="White"/><TextBlock Text="Favoritar/Desfavoritar" Foreground="White"/></StackPanel>
           </Button>
           <Border BorderBrush="#333" BorderThickness="0,1,0,0" Margin="8,2"/>
-          <Button Click="OnShowAuditClick" Padding="12,9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Background="Transparent">
-            <StackPanel Orientation="Horizontal" Spacing="10"><TextBlock Text="&#xEADF;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"/><TextBlock Text="Ver Auditoria"/></StackPanel>
+          <Button Click="OnShowAuditClick" Padding="12,9" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Background="Transparent" Foreground="White">
+            <StackPanel Orientation="Horizontal" Spacing="10"><TextBlock Width="20" Text="≡" Foreground="White"/><TextBlock Text="Ver Auditoria" Foreground="White"/></StackPanel>
           </Button>
         </StackPanel>
       </Border>
@@ -130,7 +128,7 @@
         <!-- Header with counter -->
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
           <Border Width="30" Height="30" CornerRadius="15" BorderBrush="#333" BorderThickness="1" VerticalAlignment="Center">
-            <TextBlock Text="&#xE716;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock Text="♟" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
           </Border>
           <TextBlock Grid.Column="1" Text="Clientes" FontSize="18" VerticalAlignment="Center"/>
           <TextBlock Grid.Column="2" Text="{Binding ClientsFilteredCount, StringFormat={}{0} clientes}" Opacity="0.7" VerticalAlignment="Center"/>
@@ -188,7 +186,7 @@
         <!-- Header with counter -->
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
           <Border Width="30" Height="30" CornerRadius="15" BorderBrush="#333" BorderThickness="1" VerticalAlignment="Center">
-            <TextBlock Text="&#xE7F4;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock Text="⌖" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
           </Border>
           <TextBlock Grid.Column="1" Text="Acessos" FontSize="18" VerticalAlignment="Center"/>
           <TextBlock Grid.Column="2" Text="{Binding AccessesCountDisplay, StringFormat={}{0} acessos}" Opacity="0.7" VerticalAlignment="Center"/>

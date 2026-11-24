@@ -1,4 +1,4 @@
-# MenuProUI v2.0.0
+# MenuProUI v2.0.4
 
 MenuProUI é um gerenciador de acessos (SSH, RDP, URLs e MTK) organizado por clientes.
 
@@ -66,7 +66,7 @@ Instalação do .deb
 ------------------
 
 ```bash
-sudo dpkg -i menupro-ui_1.9.8_amd64.deb
+sudo dpkg -i menupro-ui_2.0.4_amd64.deb
 sudo apt-get install -f
 ```
 
@@ -141,7 +141,7 @@ Fluxo recomendado:
 
 ```bash
 cp .env.release.example .env.release
-bash scripts/release_publish_linux.sh 1.9.8
+bash scripts/release_publish_linux.sh 2.0.4
 ```
 
 O script executa automaticamente:

@@ -392,18 +392,13 @@ Versão 2.0.0 - MenuProUI";
     {
         var clientsMenu = this.FindControl<Popup>("ClientsMenu");
         var accessesMenu = this.FindControl<Popup>("AccessesMenu");
+        var popup = this.FindControl<Popup>(popupName);
+        if (popup == null) return;
+
+        var shouldOpen = !popup.IsOpen;
         if (clientsMenu != null) clientsMenu.IsOpen = false;
         if (accessesMenu != null) accessesMenu.IsOpen = false;
-
-        var popup = this.FindControl<Popup>(popupName);
-        if (popup != null)
-            popup.IsOpen = !popup.IsOpen;
-    }
-
-    /// <summary>Fecha os menus ao clicar fora deles.</summary>
-    private void OnWindowPointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        CloseMenus();
+        popup.IsOpen = shouldOpen;
     }
 
     /// <summary>Fecha todos os menus popup abertos</summary>

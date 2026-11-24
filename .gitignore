@@ -48,3 +48,4 @@ dist/
 dist/*
 !dist/.gitkeep
 !dist/README.md
+!dist/release_notes_*.md

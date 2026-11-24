@@ -9,7 +9,7 @@ if [[ -z "${VERSION}" ]]; then
   VERSION="$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' MenuProUI.csproj | head -n 1)"
 fi
 if [[ -z "${VERSION}" ]]; then
-  VERSION="1.9.8"
+  VERSION="2.0.4"
 fi
 # default target (can be overridden by loop or env)
 ARCH="amd64"
