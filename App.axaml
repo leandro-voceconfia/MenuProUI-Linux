@@ -30,6 +30,11 @@
       <Setter Property="MinHeight" Value="38"/>
     </Style>
 
+    <Style Selector="ComboBox">
+      <Setter Property="CornerRadius" Value="7"/>
+      <Setter Property="MinHeight" Value="38"/>
+    </Style>
+
     <Style Selector="Border.Card">
       <Setter Property="Background" Value="#111827"/>
       <Setter Property="BorderBrush" Value="#263244"/>
