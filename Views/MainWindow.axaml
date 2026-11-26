@@ -3,64 +3,44 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         x:Class="MenuProUI.Views.MainWindow"
-        Width="1200" Height="700"
+        Width="1320" Height="760"
+        MinWidth="960" MinHeight="620"
         Title="MenuProUI"
         Icon="avares://MenuProUI/Assets/icon-256.png"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d">
 
-  <Grid ColumnDefinitions="320,*" RowDefinitions="Auto,*,Auto" Margin="14" RowSpacing="12" ColumnSpacing="12">
+  <Grid ColumnDefinitions="300,*" RowDefinitions="Auto,*,Auto" Margin="16" RowSpacing="14" ColumnSpacing="14">
 
-    <!-- Top bar with dropdown menus -->
-    <Border Grid.ColumnSpan="2" CornerRadius="10" Padding="12" BorderBrush="#333" BorderThickness="1">
-      <Grid ColumnDefinitions="Auto,Auto,260,*,Auto,Auto,Auto,Auto" ColumnSpacing="15">
-        
-        <!-- Menu Clientes -->
-        <StackPanel Orientation="Horizontal" Spacing="5">
-          <Button Name="ClientsMenuBtn"
-                  Width="35"
-                  Height="35"
-                  Padding="0"
-                  FontSize="20"
-                  HorizontalContentAlignment="Center"
-                  VerticalContentAlignment="Center"
-                  ToolTip.Tip="Menu de Clientes">♟</Button>
-          <TextBlock VerticalAlignment="Center" Text="Clientes" FontWeight="Bold"/>
+    <!-- Header -->
+    <Border Grid.ColumnSpan="2" Classes="Card" Padding="12,10">
+      <Grid ColumnDefinitions="220,*,Auto" ColumnSpacing="12">
+        <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+          <Border Width="38" Height="38" CornerRadius="9" Background="#2563EB">
+            <TextBlock Text="M" FontSize="18" FontWeight="Bold" Foreground="White"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Border>
+          <StackPanel VerticalAlignment="Center">
+            <TextBlock Text="MenuPro" FontSize="18" FontWeight="SemiBold"/>
+            <TextBlock Text="Centro de acessos" FontSize="11" Foreground="#94A3B8"/>
+          </StackPanel>
         </StackPanel>
 
-        <!-- Menu Acessos -->
-        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="5">
-          <Button Name="AccessesMenuBtn"
-                  Width="35"
-                  Height="35"
-                  Padding="0"
-                  FontSize="20"
-                  HorizontalContentAlignment="Center"
-                  VerticalContentAlignment="Center"
-                  ToolTip.Tip="Menu de Acessos">⌖</Button>
-          <TextBlock VerticalAlignment="Center" Text="Acessos" FontWeight="Bold"/>
-        </StackPanel>
-
-        <!-- Busca global -->
-        <TextBox Grid.Column="2"
+        <TextBox Grid.Column="1"
                  Name="GlobalSearchBox"
-                 Watermark="🔎 Busca global..."
+                 Watermark="Buscar em clientes e acessos..."
                  Text="{Binding GlobalSearchText}"
-                 Padding="10,8" CornerRadius="6" BorderBrush="#333"/>
+                 MaxWidth="520"
+                 HorizontalAlignment="Stretch"
+                 VerticalAlignment="Center"/>
 
-        <!-- Audit integrity status -->
-        <TextBlock Grid.Column="3"
-                   Name="AuditIntegrityText"
-                   Text="Auditoria: verificando..."
-                   Opacity="0.85"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Right"/>
-
-        <!-- Quick actions -->
-        <Button Grid.Column="4" Content="Abrir" Click="OnOpenAccess" ToolTip.Tip="Abrir acesso selecionado (Enter)"/>
-        <Button Grid.Column="5" Content="Checar Conectividade" Click="OnCheckConnectivity" ToolTip.Tip="Checar conectividade dos acessos do cliente selecionado (Ctrl+Shift+K)"/>
-        <Button Grid.Column="6" Content="Recarregar" Click="OnReload" ToolTip.Tip="Recarregar dados"/>
-        <Button Grid.Column="7" Content="Configurações" Click="OnSettingsClick" ToolTip.Tip="Abrir configurações (Ctrl+Shift+S)"/>
+        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8">
+          <Border CornerRadius="7" Padding="10,7" Background="#172033" VerticalAlignment="Center">
+            <TextBlock Name="AuditIntegrityText" Text="Auditoria: verificando..." FontSize="12" Foreground="#CBD5E1"/>
+          </Border>
+          <Button Name="ClientsMenuBtn" Content="Clientes" ToolTip.Tip="Menu de Clientes"/>
+          <Button Name="AccessesMenuBtn" Content="Acessos" ToolTip.Tip="Menu de Acessos"/>
+        </StackPanel>
       </Grid>
     </Border>
 
@@ -122,16 +102,22 @@
     </Popup>
 
     <!-- Clients -->
-    <Border Grid.Row="1" Grid.Column="0" CornerRadius="10" Padding="12" BorderBrush="#333" BorderThickness="1">
-      <Grid RowDefinitions="Auto,Auto,*,Auto,Auto,Auto,Auto" RowSpacing="10">
+    <Border Grid.Row="1" Grid.Column="0" Classes="Card" Padding="12">
+      <Grid RowDefinitions="Auto,Auto,*,Auto,Auto,Auto" RowSpacing="10">
         
         <!-- Header with counter -->
-        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
-          <Border Width="30" Height="30" CornerRadius="15" BorderBrush="#333" BorderThickness="1" VerticalAlignment="Center">
-            <TextBlock Text="♟" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+          <Border Width="34" Height="34" CornerRadius="8" Background="#1D4ED8" VerticalAlignment="Center">
+            <TextBlock Text="C" FontSize="14" FontWeight="Bold" Foreground="White"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
           </Border>
-          <TextBlock Grid.Column="1" Text="Clientes" FontSize="18" VerticalAlignment="Center"/>
-          <TextBlock Grid.Column="2" Text="{Binding ClientsFilteredCount, StringFormat={}{0} clientes}" Opacity="0.7" VerticalAlignment="Center"/>
+          <StackPanel Grid.Column="1" VerticalAlignment="Center">
+            <TextBlock Text="Clientes" FontSize="16" FontWeight="SemiBold"/>
+            <TextBlock Text="Organizações cadastradas" FontSize="11" Foreground="#94A3B8"/>
+          </StackPanel>
+          <Border Grid.Column="2" CornerRadius="12" Padding="8,4" Background="#172033" VerticalAlignment="Center">
+            <TextBlock Text="{Binding ClientsFilteredCount, StringFormat={}{0}}" FontSize="12" Foreground="#CBD5E1"/>
+          </Border>
         </Grid>
 
         <!-- Search box -->
@@ -139,7 +125,7 @@
                  Name="ClientsSearchBox"
                  Watermark="🔍 Buscar cliente..."
                  Text="{Binding ClientsSearchText}"
-                 Padding="10,8" CornerRadius="6" BorderBrush="#333"/>
+                 Padding="10,8" BorderBrush="#263244"/>
 
         <!-- Clients list filtered -->
         <ListBox Grid.Row="2" Name="ClientsList"
@@ -156,7 +142,7 @@
 
           <ListBox.ItemTemplate>
             <DataTemplate>
-              <Border Padding="6" CornerRadius="8">
+              <Border Padding="7,5" CornerRadius="7">
                 <Grid ColumnDefinitions="32,*">
                   <TextBlock Grid.Column="0"
                              Text="{Binding ConnectivityBadge}"
@@ -171,25 +157,33 @@
           </ListBox.ItemTemplate>
         </ListBox>
 
-        <Border Grid.Row="3" BorderBrush="#333" BorderThickness="0,1,0,0" Margin="0,6,0,6"/>
-
-        <TextBlock Grid.Row="4" Text="Arquivos" Opacity="0.8"/>
-        <TextBlock Grid.Row="5" Text="{Binding ClientsPath}" Opacity="0.7" FontSize="12" TextTrimming="CharacterEllipsis"/>
-        <TextBlock Grid.Row="6" Text="{Binding AccessesPath}" Opacity="0.7" FontSize="12" TextTrimming="CharacterEllipsis"/>
+        <Border Grid.Row="3" BorderBrush="#263244" BorderThickness="0,1,0,0" Margin="0,4,0,2"/>
+        <TextBlock Grid.Row="4" Text="Dados locais" FontSize="11" FontWeight="SemiBold" Foreground="#94A3B8"/>
+        <TextBlock Grid.Row="5" Text="{Binding ClientsPath}" Foreground="#64748B" FontSize="10"
+                   TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding ClientsPath}"/>
       </Grid>
     </Border>
 
     <!-- Accesses -->
-    <Border Grid.Row="1" Grid.Column="1" CornerRadius="10" Padding="12" BorderBrush="#333" BorderThickness="1">
+    <Border Grid.Row="1" Grid.Column="1" Classes="Card" Padding="12">
       <Grid RowDefinitions="Auto,Auto,*" RowSpacing="10">
 
         <!-- Header with counter -->
-        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
-          <Border Width="30" Height="30" CornerRadius="15" BorderBrush="#333" BorderThickness="1" VerticalAlignment="Center">
-            <TextBlock Text="⌖" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+          <Border Width="34" Height="34" CornerRadius="8" Background="#0F766E" VerticalAlignment="Center">
+            <TextBlock Text="A" FontSize="14" FontWeight="Bold" Foreground="White"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
           </Border>
-          <TextBlock Grid.Column="1" Text="Acessos" FontSize="18" VerticalAlignment="Center"/>
-          <TextBlock Grid.Column="2" Text="{Binding AccessesCountDisplay, StringFormat={}{0} acessos}" Opacity="0.7" VerticalAlignment="Center"/>
+          <StackPanel Grid.Column="1" VerticalAlignment="Center">
+            <TextBlock Text="Acessos" FontSize="16" FontWeight="SemiBold"/>
+            <TextBlock Text="{Binding AccessesCountDisplay, StringFormat={}{0} registros}" FontSize="11" Foreground="#94A3B8"/>
+          </StackPanel>
+          <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+            <Button Content="Abrir" Classes="accent" Click="OnOpenAccess" ToolTip.Tip="Abrir acesso selecionado (Enter)"/>
+            <Button Content="Conectividade" Click="OnCheckConnectivity" ToolTip.Tip="Checar conectividade (Ctrl+Shift+K)"/>
+            <Button Content="Atualizar" Click="OnReload" ToolTip.Tip="Recarregar dados"/>
+            <Button Content="Configurações" Click="OnSettingsClick" ToolTip.Tip="Abrir configurações (Ctrl+Shift+S)"/>
+          </StackPanel>
         </Grid>
 
         <!-- Search box for accesses -->
@@ -197,7 +191,7 @@
                  Name="AccessesSearchBox"
                  Watermark="🔍 Buscar acesso..."
                  Text="{Binding AccessesSearchText}"
-                 Padding="10,8" CornerRadius="6" BorderBrush="#333"/>
+                 Padding="10,8" BorderBrush="#263244"/>
 
         <!-- Accesses grid (colunas redimensionáveis) -->
         <DataGrid Grid.Row="2"
@@ -249,18 +243,22 @@
     </Border>
 
     <!-- Footer -->
-    <Border Grid.Row="2" Grid.ColumnSpan="2" CornerRadius="10" Padding="10,8" BorderBrush="#333" BorderThickness="1">
-      <Grid ColumnDefinitions="Auto,*">
+    <Border Grid.Row="2" Grid.ColumnSpan="2" Classes="Card" Padding="10,7">
+      <Grid ColumnDefinitions="Auto,*,Auto">
         <TextBlock Name="AppVersionText"
                    Grid.Column="0"
                    Text="Versão: -"
-                   Opacity="0.85"
+                   Foreground="#94A3B8"
+                   FontSize="12"
                    VerticalAlignment="Center"/>
+        <Border Grid.Column="1" Width="1" Height="16" Margin="14,0" Background="#263244"
+                HorizontalAlignment="Left"/>
         <TextBlock Name="ConnectivityStatusText"
-                   Grid.Column="1"
+                   Grid.Column="2"
                    Text="Conectividade: aguardando checagem"
                    HorizontalAlignment="Right"
-                   Opacity="0.9"
+                   Foreground="#CBD5E1"
+                   FontSize="12"
                    VerticalAlignment="Center"/>
       </Grid>
     </Border>
