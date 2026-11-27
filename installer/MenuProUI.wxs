@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package
+    Name="MenuProUI"
+    Manufacturer="VoceConfia"
+    Version="$(var.Version)"
+    UpgradeCode="{931725AF-6904-4621-BA6A-1F374487B9CC}"
+    Language="1046"
+    InstallerVersion="500"
+    Scope="perMachine">
+    <MajorUpgrade DowngradeErrorMessage="A newer version of MenuProUI is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <Feature Id="MainApplication" Title="MenuProUI" Level="1">
+      <ComponentGroupRef Id="ApplicationFiles" />
+      <ComponentRef Id="ApplicationShortcut" />
+    </Feature>
+
+    <StandardDirectory Id="ProgramFiles64Folder">
+      <Directory Id="INSTALLFOLDER" Name="MenuProUI" />
+    </StandardDirectory>
+
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Directory Id="ApplicationProgramsFolder" Name="MenuProUI" />
+    </StandardDirectory>
+
+    <Component Id="ApplicationShortcut" Directory="ApplicationProgramsFolder" Guid="*">
+      <Shortcut
+        Id="ApplicationStartMenuShortcut"
+        Name="MenuProUI"
+        Target="[INSTALLFOLDER]MenuProUI.exe"
+        WorkingDirectory="INSTALLFOLDER" />
+      <RemoveFolder Id="RemoveApplicationProgramsFolder" On="uninstall" />
+      <RegistryValue
+        Root="HKLM"
+        Key="Software\VoceConfia\MenuProUI"
+        Name="installed"
+        Type="integer"
+        Value="1"
+        KeyPath="yes" />
+    </Component>
+
+    <ComponentGroup Id="ApplicationFiles" Directory="INSTALLFOLDER">
+      <Files Include="$(var.PublishDir)\**" />
+    </ComponentGroup>
+  </Package>
+</Wix>

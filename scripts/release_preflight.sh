@@ -54,6 +54,8 @@ require_file "Views/MainWindow.axaml.cs"
 require_file "README.md"
 require_file "build-deb.sh"
 require_file "scripts/publish_github_release.py"
+require_file "scripts/build-msi.ps1"
+require_file "installer/MenuProUI.wxs"
 ok "Arquivos essenciais"
 
 if grep -q 'Ctrl+Shift+K' README.md; then

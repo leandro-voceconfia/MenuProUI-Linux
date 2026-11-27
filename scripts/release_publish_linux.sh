@@ -9,7 +9,7 @@ fi
 APP_NAME="${APP_NAME:-MenuProUI-Linux}"
 PKG_NAME="${PKG_NAME:-menupro-ui}"
 DIST_DIR="${DIST_DIR:-dist}"
-DEFAULT_VERSION="${DEFAULT_VERSION:-2.0.4}"
+DEFAULT_VERSION="${DEFAULT_VERSION:-2.0.7}"
 ARCH="${ARCH:-amd64}"
 OWNER_REPO_INPUT="${2:-${GITHUB_REPO:-}}"
 
@@ -55,6 +55,7 @@ require_command() {
 require_command git
 require_command python3
 require_command bash
+require_command gh
 
 VERSION="$(normalize_version "$VERSION_INPUT")"
 TAG="v${VERSION}"
@@ -133,6 +134,12 @@ python3 scripts/publish_github_release.py \
   --body-file "$NOTES_PATH" \
   "$DEB_PATH"
 
+echo "==> Disparar build Windows e anexar MSI à release"
+gh workflow run windows-msi-release.yml \
+  --repo "$OWNER_REPO" \
+  --ref main \
+  --field "tag=${TAG}"
+
 echo
-echo "Concluído: release ${TAG} publicada para ${OWNER_REPO}"
+echo "Release ${TAG} publicada para ${OWNER_REPO}; workflow MSI iniciado."
 echo "Notas: $NOTES_PATH"

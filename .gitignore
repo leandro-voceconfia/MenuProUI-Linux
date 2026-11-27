@@ -28,6 +28,7 @@ Thumbs.db
 
 # Packages (DEB, etc)
 *.deb
+*.msi
 menupro-ui_*/
 
 # Local user files
