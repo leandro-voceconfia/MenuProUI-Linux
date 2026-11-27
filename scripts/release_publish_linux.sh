@@ -6,7 +6,7 @@ if [[ -f ".env.release" ]]; then
   source .env.release
 fi
 
-APP_NAME="${APP_NAME:-MenuProUI-Linux}"
+APP_NAME="${APP_NAME:-MenuProUI-}"
 PKG_NAME="${PKG_NAME:-menupro-ui}"
 DIST_DIR="${DIST_DIR:-dist}"
 DEFAULT_VERSION="${DEFAULT_VERSION:-2.0.9}"
