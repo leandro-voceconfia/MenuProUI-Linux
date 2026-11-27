@@ -1,4 +1,4 @@
-# MenuProUI v2.0.7
+# MenuProUI v2.0.8
 
 MenuProUI é um gerenciador de acessos (SSH, RDP, URLs e MTK) organizado por clientes.
 
@@ -66,7 +66,7 @@ Instalação do .deb
 ------------------
 
 ```bash
-sudo dpkg -i menupro-ui_2.0.7_amd64.deb
+sudo dpkg -i menupro-ui_2.0.8_amd64.deb
 sudo apt-get install -f
 ```
 
@@ -76,9 +76,15 @@ O instalador também executa uma checagem simples de comandos essenciais no `pre
 Instalação do MSI (Windows)
 ---------------------------
 
-Baixe `menupro-ui_2.0.7_x64.msi` na página de releases do GitHub e execute o
+Baixe `menupro-ui_2.0.8_x64.msi` na página de releases do GitHub e execute o
 instalador. Ele instala a aplicação self-contained e cria um atalho no menu
 Iniciar.
+
+No Windows, URLs abrem no navegador padrão, SSH usa o Cliente OpenSSH do
+Windows (recurso opcional) e RDP usa a Conexão de Área de Trabalho Remota
+nativa (`mstsc`). A validação de certificados RDP é controlada pelo Windows;
+o cliente nativo não oferece a opção de ignorá-la. Para acessos MikroTik,
+instale o WinBox e deixe-o disponível no `PATH`.
 
 Para gerar o MSI localmente, instale o WiX Toolset 5.0.2 e execute:
 
@@ -87,7 +93,7 @@ dotnet tool install --global wix --version 5.0.2
 .\scripts\build-msi.ps1
 ```
 
-O arquivo `menupro-ui_2.0.7_x64.msi` será criado na raiz do repositório.
+O arquivo `menupro-ui_2.0.8_x64.msi` será criado na raiz do repositório.
 
 Atalhos de Teclado
 ------------------
@@ -136,7 +142,7 @@ GitHub & Suporte
 
 Para dúvidas, sugestões ou reportar problemas:
 
-👉 https://github.com/zolinhos/MenuProUI-Linux
+👉 https://github.com/leandro-voceconfia/MenuProUI
 
 Contribuição
 ------------
@@ -157,7 +163,7 @@ Fluxo recomendado:
 
 ```bash
 cp .env.release.example .env.release
-bash scripts/release_publish_linux.sh 2.0.7
+bash scripts/release_publish_linux.sh 2.0.8
 ```
 
 O script executa automaticamente:

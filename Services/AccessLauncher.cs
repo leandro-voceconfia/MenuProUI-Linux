@@ -1,6 +1,8 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Text;
 using MenuProUI.Models;
 
 namespace MenuProUI.Services;
@@ -8,8 +10,8 @@ namespace MenuProUI.Services;
 /// <summary>
 /// Serviço responsável por abrir/conectar acessos de diferentes tipos.
 /// Detecta tipo de acesso e executa comando apropriado:
-/// - SSH: abre terminal com conexão SSH
-/// - RDP: abre cliente RDP no terminal (com suporte a xfreerdp/xfreerdp3)
+/// - SSH: abre conexão SSH no terminal
+/// - RDP: abre o cliente RDP nativo do sistema
 /// - URL: abre navegador padrão
 /// - MTK: abre WinBox (quando disponível) ou protocolo winbox://
 /// </summary>
@@ -31,7 +33,7 @@ public static class AccessLauncher
                 OpenSsh(e);
                 break;
             case AccessType.RDP:
-                // Abre RDP em terminal (não congela a UI)
+                // Inicia o cliente RDP do sistema sem bloquear a UI.
                 OpenRdpInTerminal(e);
                 break;
             case AccessType.MTK:
@@ -42,13 +44,16 @@ public static class AccessLauncher
 
     /// <summary>
     /// Abre RDP com suporte a senha via stdin.
-    /// Útil para automatizar conexões RDP com credenciais.
-    /// Nota: requer xfreerdp ou xfreerdp3 instalados.
+    /// Útil para automatizar conexões RDP com credenciais no Linux.
+    /// No Windows, a senha é solicitada pelo cliente RDP nativo.
     /// </summary>
     /// <param name="e">Acesso RDP com configurações</param>
     /// <param name="password">Senha para autenticação RDP</param>
     public static void OpenRdpWithPassword(AccessEntry e, string password)
     {
+        if (OperatingSystem.IsWindows())
+            throw new NotSupportedException("O cliente RDP do Windows não aceita senha pela entrada padrão. A senha será solicitada pelo próprio cliente.");
+
         if (string.IsNullOrWhiteSpace(e.Host)) return;
 
         var client = FindRdpClient();
@@ -113,17 +118,22 @@ public static class AccessLauncher
     }
 
     /// <summary>
-    /// Abre conexão RDP em terminal.
-    /// O cliente RDP (xfreerdp) pede senha interativamente no terminal.
-    /// Evita congelar a UI pois executa em processo separado.
+    /// Abre conexão RDP usando o cliente apropriado ao sistema.
     /// </summary>
     /// <param name="e">Acesso RDP com configurações</param>
     public static void OpenRdpInTerminal(AccessEntry e)
     {
         if (string.IsNullOrWhiteSpace(e.Host)) return;
 
-        var client = FindRdpClient() ?? "xfreerdp";
         var port = (e.Porta is > 0) ? e.Porta.Value : 3389;
+
+        if (OperatingSystem.IsWindows())
+        {
+            OpenWindowsRdp(e, port);
+            return;
+        }
+
+        var client = FindRdpClient() ?? "xfreerdp";
 
         // Monta comando RDP (sem /p = cliente pede senha no terminal)
         var cmd = $"{client} /v:{e.Host}:{port}";
@@ -161,34 +171,103 @@ public static class AccessLauncher
         return null;
     }
 
+    private static void OpenWindowsRdp(AccessEntry e, int port)
+    {
+        var host = e.Host!.Trim();
+        EnsureSingleLine(host, nameof(e.Host));
+        if (host.Contains(':') && !host.StartsWith('['))
+            host = $"[{host}]";
+
+        var settings = new[]
+        {
+            $"full address:s:{host}:{port}",
+            "prompt for credentials:i:1",
+            $"screen mode id:i:{(e.RdpFullScreen ? 2 : 1)}",
+            "use multimon:i:0"
+        }.ToList();
+
+        if (!string.IsNullOrWhiteSpace(e.Usuario))
+        {
+            EnsureSingleLine(e.Usuario, nameof(e.Usuario));
+            if (!string.IsNullOrWhiteSpace(e.Dominio))
+            {
+                EnsureSingleLine(e.Dominio, nameof(e.Dominio));
+                settings.Add($"username:s:{e.Dominio}\\{e.Usuario}");
+            }
+            else
+            {
+                settings.Add($"username:s:{e.Usuario}");
+            }
+        }
+
+        if (e.RdpFullScreen)
+        {
+            settings.Add("dynamic resolution:i:1");
+        }
+        else if (e.RdpDynamicResolution)
+        {
+            settings.Add("dynamic resolution:i:1");
+        }
+        else if (e.RdpWidth is > 0 && e.RdpHeight is > 0)
+        {
+            settings.Add($"desktopwidth:i:{e.RdpWidth.Value}");
+            settings.Add($"desktopheight:i:{e.RdpHeight.Value}");
+        }
+
+        var rdpFile = Path.Combine(Path.GetTempPath(), $"MenuProUI-{Guid.NewGuid():N}.rdp");
+        File.WriteAllText(rdpFile, string.Join(Environment.NewLine, settings), Encoding.Unicode);
+
+        var psi = new ProcessStartInfo
+        {
+            FileName = "mstsc.exe",
+            UseShellExecute = true
+        };
+        psi.ArgumentList.Add(rdpFile);
+        Process.Start(psi);
+    }
+
+    private static void EnsureSingleLine(string value, string fieldName)
+    {
+        if (value.Contains('\r') || value.Contains('\n'))
+            throw new ArgumentException("O valor não pode conter quebras de linha.", fieldName);
+    }
+
     /// <summary>
     /// Verifica se um executável está disponível no PATH.
-    /// Usa comando 'command -v' do bash para buscar.
     /// </summary>
     /// <param name="exe">Nome do executável a buscar</param>
     /// <returns>true se encontrado, false caso contrário</returns>
     private static bool IsOnPath(string exe)
     {
-        try
+        return FindExecutable(exe) is not null;
+    }
+
+    private static string? FindExecutable(string executable)
+    {
+        var path = Environment.GetEnvironmentVariable("PATH");
+        if (string.IsNullOrWhiteSpace(path)) return null;
+
+        var extensions = OperatingSystem.IsWindows()
+            ? (Environment.GetEnvironmentVariable("PATHEXT") ?? ".COM;.EXE;.BAT;.CMD")
+                .Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries)
+                .Append(string.Empty)
+                .ToArray()
+            : new[] { string.Empty };
+
+        foreach (var directory in path.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries))
         {
-            var psi = new ProcessStartInfo
+            foreach (var extension in extensions)
             {
-                FileName = "bash",
-                UseShellExecute = false,
-                RedirectStandardOutput = true
-            };
-            psi.ArgumentList.Add("-lc");
-            psi.ArgumentList.Add($"command -v {exe}");
-            var p = Process.Start(psi);
-            if (p is null) return false;
-            var output = p.StandardOutput.ReadToEnd().Trim();
-            return !string.IsNullOrWhiteSpace(output);
+                var candidate = Path.Combine(directory.Trim(), executable + extension);
+                if (File.Exists(candidate)) return candidate;
+            }
         }
-        catch { return false; }
+
+        return null;
     }
 
     /// <summary>
-    /// Abre uma URL no navegador padrão usando xdg-open.
+    /// Abre uma URL no navegador padrão do sistema.
     /// </summary>
     /// <param name="url">URL a abrir</param>
     private static void OpenUrl(string? url)
@@ -204,10 +283,11 @@ public static class AccessLauncher
 
         var psi = new ProcessStartInfo
         {
-            FileName = "xdg-open",
-            UseShellExecute = false
+            FileName = OperatingSystem.IsWindows() ? parsed.ToString() : "xdg-open",
+            UseShellExecute = OperatingSystem.IsWindows()
         };
-        psi.ArgumentList.Add(parsed.ToString());
+        if (!OperatingSystem.IsWindows())
+            psi.ArgumentList.Add(parsed.ToString());
         Process.Start(psi);
     }
 
@@ -222,6 +302,24 @@ public static class AccessLauncher
 
         var port = (e.Porta is > 0) ? e.Porta.Value : 22;
         var userAt = string.IsNullOrWhiteSpace(e.Usuario) ? e.Host : $"{e.Usuario}@{e.Host}";
+
+        if (OperatingSystem.IsWindows())
+        {
+            var ssh = FindExecutable("ssh.exe")
+                ?? throw new FileNotFoundException("OpenSSH Client (ssh.exe) não encontrado. Instale o recurso opcional Cliente OpenSSH do Windows.");
+            var psi = new ProcessStartInfo
+            {
+                FileName = ssh,
+                UseShellExecute = true
+            };
+            psi.ArgumentList.Add("-p");
+            psi.ArgumentList.Add(port.ToString(System.Globalization.CultureInfo.InvariantCulture));
+            psi.ArgumentList.Add("--");
+            psi.ArgumentList.Add(userAt);
+            Process.Start(psi);
+            return;
+        }
+
         var cmd = $"ssh -p {port} {EscapeShell(userAt)}";
 
         OpenTerminal(cmd);
@@ -306,10 +404,11 @@ public static class AccessLauncher
     {
         try
         {
-            if (!IsOnPath(file)) return false;
+            var executable = FindExecutable(file);
+            if (executable is null) return false;
             var psi = new ProcessStartInfo
             {
-                FileName = file,
+                FileName = executable,
                 UseShellExecute = false
             };
             foreach (var a in args) psi.ArgumentList.Add(a);
