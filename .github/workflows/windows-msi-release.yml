@@ -1,6 +1,9 @@
 name: Windows MSI release
 
 on:
+  push:
+    tags:
+      - 'v*'
   workflow_dispatch:
     inputs:
       tag:
@@ -22,7 +25,7 @@ jobs:
       - name: Check out release source
         uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.source_ref || inputs.tag }}
+          ref: ${{ inputs.source_ref || inputs.tag || github.ref }}
 
       - name: Set up .NET
         uses: actions/setup-dotnet@v4
@@ -35,7 +38,7 @@ jobs:
       - name: Build MSI
         shell: pwsh
         env:
-          RELEASE_TAG: ${{ inputs.tag }}
+          RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
         run: |
           if ($env:RELEASE_TAG -notmatch '^v\d+\.\d+\.\d+$') {
             throw "Expected a release tag in vX.Y.Z format."
@@ -63,8 +66,17 @@ jobs:
       - name: Attach MSI to release
         env:
           GH_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ inputs.tag }}
+          RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
         run: |
-          gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY"
+          for attempt in {1..30}; do
+            if gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+              break
+            fi
+            if [ "$attempt" -eq 30 ]; then
+              echo "Release $RELEASE_TAG was not found after waiting."
+              exit 1
+            fi
+            sleep 5
+          done
           gh release upload "$RELEASE_TAG" artifacts/*.msi \
             --repo "$GITHUB_REPOSITORY" --clobber

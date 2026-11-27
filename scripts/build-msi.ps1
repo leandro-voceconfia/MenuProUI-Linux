@@ -47,6 +47,7 @@ try {
     wix build $sourceFile -arch x64 `
         -d "Version=$Version" `
         -d "PublishDir=$publishDir" `
+        -d "ProjectRoot=$projectRoot" `
         -out $outputFile `
         -pdbtype none
     if ($LASTEXITCODE -ne 0) {

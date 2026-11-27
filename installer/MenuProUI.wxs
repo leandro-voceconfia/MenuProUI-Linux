@@ -8,6 +8,7 @@
     Language="1046"
     InstallerVersion="500"
     Scope="perMachine">
+    <Icon Id="MenuProUIIcon.exe" SourceFile="$(var.ProjectRoot)\Assets\MenuProUI.ico" />
     <MajorUpgrade DowngradeErrorMessage="A newer version of MenuProUI is already installed." />
     <MediaTemplate EmbedCab="yes" />
 
@@ -28,6 +29,7 @@
       <Shortcut
         Id="ApplicationStartMenuShortcut"
         Name="MenuProUI"
+        Icon="MenuProUIIcon.exe"
         Target="[INSTALLFOLDER]MenuProUI.exe"
         WorkingDirectory="INSTALLFOLDER" />
       <RemoveFolder Id="RemoveApplicationProgramsFolder" On="uninstall" />

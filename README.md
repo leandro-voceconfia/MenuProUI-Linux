@@ -1,4 +1,4 @@
-# MenuProUI v2.0.8
+# MenuProUI v2.0.9
 
 MenuProUI é um gerenciador de acessos (SSH, RDP, URLs e MTK) organizado por clientes.
 
@@ -66,7 +66,7 @@ Instalação do .deb
 ------------------
 
 ```bash
-sudo dpkg -i menupro-ui_2.0.8_amd64.deb
+sudo dpkg -i menupro-ui_2.0.9_amd64.deb
 sudo apt-get install -f
 ```
 
@@ -76,7 +76,7 @@ O instalador também executa uma checagem simples de comandos essenciais no `pre
 Instalação do MSI (Windows)
 ---------------------------
 
-Baixe `menupro-ui_2.0.8_x64.msi` na página de releases do GitHub e execute o
+Baixe `menupro-ui_2.0.9_x64.msi` na página de releases do GitHub e execute o
 instalador. Ele instala a aplicação self-contained e cria um atalho no menu
 Iniciar.
 
@@ -93,7 +93,7 @@ dotnet tool install --global wix --version 5.0.2
 .\scripts\build-msi.ps1
 ```
 
-O arquivo `menupro-ui_2.0.8_x64.msi` será criado na raiz do repositório.
+O arquivo `menupro-ui_2.0.9_x64.msi` será criado na raiz do repositório.
 
 Atalhos de Teclado
 ------------------
@@ -163,7 +163,7 @@ Fluxo recomendado:
 
 ```bash
 cp .env.release.example .env.release
-bash scripts/release_publish_linux.sh 2.0.8
+bash scripts/release_publish_linux.sh 2.0.9
 ```
 
 O script executa automaticamente:
@@ -172,4 +172,4 @@ O script executa automaticamente:
 - build do `.deb`
 - criação/push da tag `v<versão>`
 - criação/atualização da release no GitHub e upload do `.deb`
-- disparo do workflow `Windows MSI release`, que compila o MSI em Windows e o anexa à release
+- início automático do workflow `Windows MSI release` ao publicar a tag; ele compila o MSI em Windows e o anexa à release
