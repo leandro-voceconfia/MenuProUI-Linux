@@ -80,10 +80,10 @@ Baixe `menupro-ui_2.0.7_x64.msi` na página de releases do GitHub e execute o
 instalador. Ele instala a aplicação self-contained e cria um atalho no menu
 Iniciar.
 
-Para gerar o MSI localmente, instale o WiX Toolset 4.0.5 e execute:
+Para gerar o MSI localmente, instale o WiX Toolset 5.0.2 e execute:
 
 ```powershell
-dotnet tool install --global wix --version 4.0.5
+dotnet tool install --global wix --version 5.0.2
 .\scripts\build-msi.ps1
 ```
 

@@ -29,7 +29,7 @@ if ($Version -notmatch "^\d+\.\d+\.\d+(\.\d+)?$") {
 }
 
 if (-not (Get-Command wix -ErrorAction SilentlyContinue)) {
-    throw "WiX Toolset 4.0.5 is required. Install it with: dotnet tool install --global wix --version 4.0.5"
+    throw "WiX Toolset 5.0.2 is required. Install it with: dotnet tool install --global wix --version 5.0.2"
 }
 
 $publishDir = Join-Path $projectRoot "publish/win-x64"
